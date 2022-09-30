@@ -35,8 +35,8 @@ $system_domain_after = "test.example.com";
 
 $database_host_after = "localhost";
 $database_name_after = "database_test";
-$acount_name_after  = "db_username_test";
-$acount_password_after  = "db_password_test";
+$database_user_after  = "db_username_test";
+$database_password_after  = "db_password_test";
 $database_prefix_after = "acms_";
 
 // 移行先パス設定 
@@ -209,7 +209,7 @@ if (isset($database_prefix_before)) {
 if (isset($database_prefix_after)) {
   $sql = "SELECT sequence_system_version FROM ".$database_prefix_after."sequence";
   try { 
-    $dbh = new PDO('mysql:host='.$database_host_after.';dbname='.$database_name_after.'', $acount_name_after, $acount_password_after);
+    $dbh = new PDO('mysql:host='.$database_host_after.';dbname='.$database_name_after.'', $database_user_after, $database_password_after);
     $stmt = $dbh->query($sql);
     foreach ($stmt as $row) {
       $after_version = $row['sequence_system_version'];
@@ -253,7 +253,7 @@ if (isset($database_prefix_after)) {
     if (isset($backup_ini)) { $backup = $backup_ini; }
     if (isset($zip_ini)) { $zip = $zip_ini; }
 
-  } elseif ($input_pass != $acount_password_after) {
+  } elseif ($input_pass != $database_password_after) {
 
     array_push($msg,"データベースのパスワードが間違っています。");
 
@@ -324,7 +324,7 @@ if (isset($database_prefix_after)) {
 
       $sql_filePath_after = $backup_dir .'/' . $sql_fileName_after;
 
-      $command_dump = $mysqldump. ' --single-transaction --default-character-set=binary ' . $database_name_after . ' --host=' . $database_host_after . ' --user=' . $acount_name_after . ' --password=' . $acount_password_after . ' > ' . $sql_filePath_after;
+      $command_dump = $mysqldump. ' --single-transaction --default-character-set=binary ' . $database_name_after . ' --host=' . $database_host_after . ' --user=' . $database_user_after . ' --password=' . $database_password_after . ' > ' . $sql_filePath_after;
     
       exec($command_dump);
 
@@ -332,7 +332,7 @@ if (isset($database_prefix_after)) {
       // データベース インポート
       // ------------------------
 
-      $command_restore = "$mysql -u $acount_name_after -p$acount_password_after -h $database_host_after $database_name_after < $sql_filePath";
+      $command_restore = "$mysql -u $database_user_after -p$database_password_after -h $database_host_after $database_name_after < $sql_filePath";
 
       exec($command_restore);
 
@@ -345,7 +345,7 @@ if (isset($database_prefix_after)) {
       // ---------------------------
 
       try {
-        $dbh = new PDO('mysql:host='.$database_host_after.';dbname='.$database_name_after.'', $acount_name_after, $acount_password_after);
+        $dbh = new PDO('mysql:host='.$database_host_after.';dbname='.$database_name_after.'', $database_user_after, $database_password_after);
         $sql = sprintf("UPDATE %sblog SET blog_domain = '%s'",$database_prefix_after,$system_domain_after);
         $dbh->query($sql);
         $dbh = null;
