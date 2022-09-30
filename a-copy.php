@@ -78,12 +78,18 @@ $config_ini = "true";
 // 5) コマンド パスの設定
 // --------------------
 
+// XSERVER
 $mysqldump = "mysqldump";
 $mysql = "/usr/bin/mysql";
 
-// MAMP のテスト環境でチェック用
+// さくらのレンタルサーバー
+// $mysqldump = "mysqldump";
+// $mysql = "/usr/local/bin/mysql";
+
+// macos MAMP
 // $mysqldump = "/Applications/MAMP/Library/bin/mysqldump";
 // $mysql ="/Applications/MAMP/Library/bin/mysql";
+
 
 // ------------------------------
 
